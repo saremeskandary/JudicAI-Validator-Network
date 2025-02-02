@@ -1,0 +1,62 @@
+---
+title: Hackathon Team Structure and Task Distribution
+---
+
+```mermaid
+flowchart TB
+    %% Define Nodes
+    subgraph Team1[Team 1 - Onchain Development]
+        direction TB
+        B1(Blockchain Developer 1) -->|Focus| E1(EigenLayer<br>Staking/Slashing)
+        B2(Blockchain Developer 2) -->|Focus| A1(Arbitrum<br>Rewards/Penalties)
+        B1 -->|Collaborate| B2
+        B2 -->|DAO Fallback| C1(Collab.Land Setup)
+    end
+
+    subgraph Team2[Team 2 - Offchain Development]
+        direction TB
+        AID(AI Developer) -->|Focus| AI(AI Agent Config<br>Autonome.fun)
+        FD(Frontend Developer) -->|Focus| F1(Frontend Dashboard)
+        T(QA/Tester) -->|Test| AI
+        T -->|Test| F1
+        T -->|Feedback| AI
+        T -->|Feedback| F1
+    end
+
+    %% Connections Between Teams
+    E1 -->|Integrate| AI
+    A1 -->|Integrate| F1
+    C1 -->|Link| F1
+
+    %% Milestones
+    subgraph Day1[Day 1 - Planning & Setup]
+        D11(Define MVP Scope)
+        D12(Set Up Infrastructure)
+        D13(Allocate Roles)
+        D11 --> D12 --> D13
+    end
+
+    subgraph Day2[Day 2 - Core Development]
+        D21(Smart Contract Dev)
+        D22(AI Agent Logic)
+        D23(Frontend Dashboard)
+        D24(DAO Fallback Setup)
+        D21 --> D22 --> D23 --> D24
+    end
+
+    subgraph Day3[Day 3 - Integration & Testing]
+        D31(Component Integration)
+        D32(End-to-End Testing)
+        D33(Security Audit)
+        D31 --> D32 --> D33
+    end
+
+    subgraph Day4[Day 4 - Deployment & Presentation]
+        D41(Deployment)
+        D42(Documentation)
+        D43(Presentation Prep)
+        D41 --> D42 --> D43
+    end
+
+    %% Connect Days
+    Day1 --> Day2 --> Day3 --> Day4

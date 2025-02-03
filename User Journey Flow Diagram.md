@@ -23,6 +23,12 @@ graph TD
     O[Escalate to DAO Fallback]
     P[DAO Voting & Resolution]
     Q[Final Outcome Recorded On-chain]
+
+    R[User Raises Objection]
+    S[Pay Gas Cost for Objection]
+    T[Re-evaluate Service with Objection]
+    U{Objection Valid?}
+    V[Adjust Outcome Based on Objection]
     
     A --> B
     B --> C
@@ -40,12 +46,22 @@ graph TD
     K -- No --> O
     O --> P
     P --> Q
+    
+    %% New Steps for Objections
+    Q --> R
+    R --> S
+    S --> T
+    T --> U
+    U -- Yes --> V
+    V --> Q
+    U -- No --> Q
 ```
 
 ### **2. Service Validation Sequence Diagram (Mermaid SequenceDiagram)**
 
 ```mermaid
 sequenceDiagram
+    participant User as Service Consumer/User
     participant Provider as AI Agent Provider
     participant Validator as Validator AI Agents
     participant Eigen as EigenLayer (Registration & Staking)
@@ -75,6 +91,19 @@ sequenceDiagram
     alt Consensus Reached
         Validator->>Arbitrum: Record Consensus Outcome
         Arbitrum-->>Provider: Distribute Rewards / Apply Penalties
+        
+        %% User Objection Handling
+        User->>Arbitrum: Raise Objection
+        Arbitrum-->>User: Confirm Gas Cost Payment
+        User->>Arbitrum: Pay Gas Cost
+        Arbitrum-->>Validator: Re-evaluate Service with Objection
+        Validator->>Arbitrum: Validate Objection
+        alt Objection Valid
+            Validator->>Arbitrum: Adjust Outcome Based on Objection
+            Arbitrum-->>Provider: Update Final Outcome (Reward or Penalty)
+        else Objection Invalid
+            Arbitrum-->>User: Retain Gas Cost (No Refund)
+        end
     else Consensus Fails
         Validator->>DAO: Escalate Dispute to DAO
         DAO->>DAO: Token Holder Voting & Resolution
